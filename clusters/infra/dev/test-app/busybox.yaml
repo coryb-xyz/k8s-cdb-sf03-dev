@@ -20,7 +20,7 @@ spec:
           mountPath: /data
   initContainers:
     - name: init-busybox
-      image: busybox:stable
+      image: busybox
       command:
         [
           "sh",
