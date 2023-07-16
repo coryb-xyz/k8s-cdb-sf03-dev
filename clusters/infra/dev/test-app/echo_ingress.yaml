@@ -13,7 +13,6 @@ spec:
           backend:
             service:
               name: echo1
-              namespace: echo
               port:
                 number: 80
   - host: echo2.1a4.co
@@ -24,6 +23,5 @@ spec:
           backend:
             service:
               name: echo2
-              namespace: echo
               port:
                 number: 80
