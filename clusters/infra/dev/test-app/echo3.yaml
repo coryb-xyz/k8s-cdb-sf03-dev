@@ -38,4 +38,4 @@ spec:
               memory: "32Mi"
             requests:
               cpu: "50m"
-              memory: "32Mi"
+              memory: "16Mi"
