@@ -29,7 +29,7 @@ spec:
         - name: echo1
           image: hashicorp/http-echo
           args:
-            - "-text='hola mundo'"
+            - "-text=hola mundo"
           ports:
             - containerPort: 5678
           resources:

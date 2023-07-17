@@ -26,3 +26,13 @@ spec:
                 name: echo2
                 port:
                   number: 80
+    - host: echo.1a4.co
+      http:
+        paths:
+          - pathType: Prefix
+            path: /echo
+            backend:
+              service:
+                name: echo3
+                port:
+                  number: 80
