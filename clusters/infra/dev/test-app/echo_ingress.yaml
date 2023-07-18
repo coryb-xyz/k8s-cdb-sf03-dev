@@ -3,7 +3,16 @@ kind: Ingress
 metadata:
   name: echo-ingress
   namespace: echo
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-staging"
+    kubernetes.io/ingress.class: "nginx"
 spec:
+  tls:
+  - hosts:
+    - echo1.1a4.co
+    - echo2.1a4.co
+    - echo.1a4.co
+    secretName: echo-tls
   ingressClassName: nginx
   rules:
     - host: echo1.1a4.co
