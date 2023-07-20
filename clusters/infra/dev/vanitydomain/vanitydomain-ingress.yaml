@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: vanitydomain-ingress
+  namespace: vanitydomain
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-staging"
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  tls:
+  - hosts:
+    - www.dev.1a4.co
+    secretName: vanitydomain-tls
+  ingressClassName: nginx
+  rules:
+    - host: www.dev.1a4.co
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: vanitydomain
+                port:
+                  number: 80
+
