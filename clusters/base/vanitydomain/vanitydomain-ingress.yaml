@@ -1,8 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: vanitydomain-ingress-$(RELEASE_ENVIRONMENT)
-  namespace: vanitydomain-$(RELEASE_ENVIRONMENT)
+  name: vanitydomain-ingress
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
     kubernetes.io/ingress.class: "nginx"

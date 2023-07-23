@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base/vanitydomain/
+namespace: dev/vanitydomain
+patches:
+  - path: vanitydomain-ingress.yaml
+    target:
+      name: vanitydomain-ingress
+  - path: vanitydomain.yaml
+    target: 
+      name: vanitydomain
