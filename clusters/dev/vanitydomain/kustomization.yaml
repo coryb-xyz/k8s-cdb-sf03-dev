@@ -10,3 +10,4 @@ patches:
   - path: vanitydomain.yaml
     target: 
       name: vanitydomain
+      kind: Deployment
