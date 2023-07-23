@@ -5,11 +5,11 @@ metadata:
 spec:
   tls:
   - hosts:
-    - www.stage.1a4.co
+    - www.sg.1a4.co
     secretName: vanitydomain-tls
   ingressClassName: nginx
   rules:
-    - host: www.stage.1a4.co
+    - host: www.sg.1a4.co
       http:
         paths:
           - pathType: Prefix
