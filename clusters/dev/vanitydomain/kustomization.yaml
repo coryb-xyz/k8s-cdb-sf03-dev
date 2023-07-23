@@ -1,0 +1,8 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ../base/vanitydomain/vanitydomain-ingress.yaml
+- vanitydomain-ingress.yaml
+- ../base/vanitydomain/vanitydomain.yaml
+- vanitydomain.yaml
+
