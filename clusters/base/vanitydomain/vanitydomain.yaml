@@ -1,37 +1,30 @@
 apiVersion: v1
-kind: Namespace
-metadata:
-  name: $(RELEASE_ENVIRONMENT)/vanitydomain
----
-apiVersion: v1
 kind: Service
 metadata:
-  name: $(RELEASE_ENVIRONMENT)/vanitydomain
-  namespace: $(RELEASE_ENVIRONMENT)/vanitydomain
+  name: vanitydomain
 spec:
   ports:
     - port: 80
       targetPort: 80
   selector:
-    app: $(RELEASE_ENVIRONMENT)/vanitydomain
+    app: vanitydomain
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: $(RELEASE_ENVIRONMENT)/vanitydomain
-  namespace: $(RELEASE_ENVIRONMENT)/vanitydomain
+  name: vanitydomain
 spec:
   selector:
     matchLabels:
-      app: $(RELEASE_ENVIRONMENT)/vanitydomain
+      app: vanitydomain
   replicas: 1
   template:
     metadata:
       labels:
-        app: $(RELEASE_ENVIRONMENT)/vanitydomain
+        app: vanitydomain
     spec:
       containers:
-        - name: $(RELEASE_ENVIRONMENT)/vanitydomain
+        - name: vanitydomain
           ports:
             - containerPort: 80
           resources:

@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: $(RELEASE_ENVIRONMENT)/vanitydomain-ingress
+  name: vanitydomain-ingress
 spec:
   tls:
   - hosts:
@@ -16,7 +16,7 @@ spec:
             path: /
             backend:
               service:
-                name: $(RELEASE_ENVIRONMENT)/vanitydomain
+                name: vanitydomain
                 port:
                   number: 80
 

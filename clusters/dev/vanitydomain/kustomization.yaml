@@ -1,15 +1,12 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-- vanitydomain-ingress.yaml
-- vanitydomain.yaml
-- ../../base/vanitydomain/
-
-replacements:
-- source:
-    kind: Deployment
-    fieldPath: metadata.environment
-  targets:
-  - select:
-      name: release_environment
-
+  - ../../base/vanitydomain/
+namespace: dev/vanitydomain
+patches:
+  - path: vanitydomain-ingress.yaml
+    target:
+      name: vanitydomain-ingress
+  - path: vanitydomain.yaml
+    target: 
+      name: vanitydomain
