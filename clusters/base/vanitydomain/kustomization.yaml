@@ -3,4 +3,5 @@ kind: Kustomization
 resources:
   - vanitydomain-ingress.yaml
   - vanitydomain.yaml
+  - namespace.yaml
   
