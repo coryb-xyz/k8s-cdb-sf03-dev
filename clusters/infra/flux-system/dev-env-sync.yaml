@@ -13,6 +13,6 @@ spec:
   postBuild:
     substitute:
       release_env: dev
-      base_uri: ${release_env}.coryb.1a4.co
+      base_uri: dev.coryb.1a4.co
 
 
