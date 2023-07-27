@@ -10,3 +10,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
+  postBuild:
+    substitute:
+      release_env: sg
+      base_uri: ${release_env}.coryb.1a4.co
