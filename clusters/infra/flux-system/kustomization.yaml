@@ -3,6 +3,7 @@ kind: Kustomization
 resources:
 - gotk-components.yaml
 - gotk-sync.yaml
-- dev-env-sync.yaml
 - base-sync.yaml
+- dev-env-sync.yaml
 - stage-env-sync.yaml
+- prod-env-sync.yaml
