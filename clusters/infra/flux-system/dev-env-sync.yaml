@@ -15,13 +15,24 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
+  name: base-dv
+  namespace: flux-system
+spec:
+  interval: 5m0s
+  path: ./clusters/base
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: dev-repo-sync
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
   name: dev-env
   namespace: flux-system
 spec:
   interval: 5m0s
-  paths: 
-    - ./clusters/base
-    - ./clusters/dev
+  path: ./clusters/dev
   prune: true
   sourceRef:
     kind: GitRepository
