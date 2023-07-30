@@ -1,13 +1,9 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: dev-env-infra
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: GitRepository
 metadata:
   name: dev-repo-sync
-  namespace: dev-env-infra
+  namespace: flux-system
 spec:
   interval: 1m0s
   ref:
@@ -19,8 +15,8 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: base
-  namespace: dev-env-infra
+  name: base-dv
+  namespace: flux-system
 spec:
   interval: 5m0s
   path: ./clusters/base
@@ -33,7 +29,7 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: dev-env
-  namespace: dev-env-infra
+  namespace: flux-system
 spec:
   interval: 5m0s
   path: ./clusters/dev
