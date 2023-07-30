@@ -1,3 +1,30 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: dev-repo-sync
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  ref:
+    branch: initial-setup
+  secretRef:
+    name: flux-system
+  url: ssh://git@github.com/coryb-xyz/k8s-cdb-sf03-dev
+---
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: base
+  namespace: flux-system
+spec:
+  interval: 5m0s
+  path: ./clusters/base
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: dev-repo-sync
+---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -9,7 +36,7 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: flux-system
+    name: dev-repo-sync
   postBuild:
     substitute:
       release_env: dev
