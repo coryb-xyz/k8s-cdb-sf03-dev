@@ -1,9 +1,9 @@
----
-apiVersion: image.toolkit.fluxcd.io/v1beta2
-kind: ImageRepository
-metadata:
-  name: vanitydomain
-  namespace: flux-system
-spec:
-  image: registry.digitalocean.com/cr-cdb-sf03-dev/vanitydomain
-  interval: 5m0s
+# ---
+# apiVersion: image.toolkit.fluxcd.io/v1beta2
+# kind: ImageRepository
+# metadata:
+#   name: vanitydomain
+#   namespace: flux-system
+# spec:
+#   image: registry.digitalocean.com/cr-cdb-sf03-dev/vanitydomain
+#   interval: 5m0s
