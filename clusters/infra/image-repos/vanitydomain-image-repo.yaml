@@ -9,3 +9,15 @@ spec:
   interval: 5m0s
   secretRef:
     name: cr-cdb-sf03-dev
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImagePolicy
+metadata:
+  name: vanitydomain
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: vanitydomain
+  policy:
+    semver:
+      range: '>=0.0.0'
