@@ -69,5 +69,5 @@ spec:
     kind: GitRepository
     name: flux-system
   update:
-    path: ./clusters/sg/vanitydomain
+    path: ./clusters/stage/vanitydomain
     strategy: Setters
