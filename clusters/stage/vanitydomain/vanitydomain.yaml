@@ -15,4 +15,4 @@ spec:
     spec:
       containers:
         - name: vanitydomain
-          image: registry.digitalocean.com/cr-cdb-sf03-dev/vanitydomain:0.0.2
+          image: registry.digitalocean.com/cr-cdb-sf03-dev/vanitydomain:0.0.2 # {"$imagepolicy": "flux-system:vanitydomain"}
