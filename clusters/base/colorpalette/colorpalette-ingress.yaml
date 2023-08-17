@@ -9,7 +9,7 @@ metadata:
 spec:
   tls:
     - hosts:
-        - www.${base_uri}
+        - apps.${base_uri}
       secretName: colorpalette-tls
   ingressClassName: nginx
   rules:
