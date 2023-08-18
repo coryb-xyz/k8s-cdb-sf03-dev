@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: colorpalette-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
+spec:
+  tls:
+    - hosts:
+        - apps.${base_uri}
+      secretName: colorpalette-tls
+  ingressClassName: nginx
+  rules:
+    - host: apps.${base_uri}
+      http:
+        paths:
+          - pathType: Prefix
+            path: /colortool
+            backend:
+              service:
+                name: colorpalette
+                port:
+                  number: 80

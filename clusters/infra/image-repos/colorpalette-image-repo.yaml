@@ -1,0 +1,48 @@
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageRepository
+metadata:
+  name: colorpalette
+  namespace: flux-system
+spec:
+  image: registry.digitalocean.com/cr-cdb-sf03-dev/colorpalette
+  interval: 5m0s
+  secretRef:
+    name: cr-cdb-sf03-dev
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImagePolicy
+metadata:
+  name: colorpalette
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: colorpalette
+  policy:
+    semver:
+      range: '>=0.0.0'
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImageUpdateAutomation
+metadata:
+  name: colorpalette-dv
+  namespace: flux-system
+spec:
+  git:
+    checkout:
+      ref:
+        branch: main
+    commit:
+      author:
+        email: flux@users.noreply.github.com
+        name: flux-system
+      messageTemplate: '{{range .Updated.Images}}{{println .}}{{end}}'
+    push:
+      branch: main
+  interval: 1m0s
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  update:
+    path: ./clusters/dev/colorpalette
+    strategy: Setters
