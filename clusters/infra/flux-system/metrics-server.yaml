@@ -23,7 +23,11 @@ spec:
         kind: HelmRepository
         name: metrics-server
         namespace: flux-system
+  install:
+    createNamespace: false
+  targetNamespace: kube-system
   values:
+    namespace: kube-system
     args:
       - --kubelet-insecure-tls
       - --kubelet-preferred-address-types=InternalIP
