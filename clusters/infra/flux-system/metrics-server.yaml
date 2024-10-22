@@ -28,3 +28,4 @@ spec:
     args:
       - --kubelet-insecure-tls
       - --kubelet-preferred-address-types=InternalIP
+  interval: 5m
