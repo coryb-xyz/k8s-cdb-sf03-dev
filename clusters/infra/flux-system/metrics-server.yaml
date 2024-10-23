@@ -25,8 +25,11 @@ spec:
         name: metrics-server
         namespace: flux-system
   values:
-    namespace: kube-system
     args:
       - --kubelet-insecure-tls
       - --kubelet-preferred-address-types=InternalIP
+    apiService:
+      insecureSkipTLSVerify: true
+    hostNetwork:
+      enabled: true
   interval: 5m
