@@ -1,0 +1,20 @@
+apiVersion: cilium.io/v1alpha1
+kind: CiliumConfig
+metadata:
+  name: cilium-config
+  namespace: kube-system
+spec:
+  debug: "false"
+  enable-ipv6: "false"
+  enable-ipv6-masquerade: "false"
+  metrics: ""
+  bpf-lb-map-max: "32768"
+  bpf-policy-map-max: "8192"
+  ipam-cilium-node-update-rate: "30s"
+  cilium-endpoint-gc-interval: "10m0s"
+  identity-gc-interval: "10m"
+  nodes-gc-interval: "10m0s"
+  k8s-client-burst: "5"
+  k8s-client-qps: "2.5"
+  monitor-aggregation: "low"
+  monitor-aggregation-interval: "10s"
