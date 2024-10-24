@@ -12,10 +12,9 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: metrics-server
-  namespace: flux-system
+  namespace: kube-system
 spec:
-  releaseName: metrics-server
-  targetNamespace: kube-system
+  interval: 5m
   chart:
     spec:
       chart: metrics-server
@@ -25,11 +24,12 @@ spec:
         name: metrics-server
         namespace: flux-system
   values:
+    apiService:
+      create: true
     args:
       - --kubelet-insecure-tls
-      - --kubelet-preferred-address-types=InternalIP
-    apiService:
-      insecureSkipTLSVerify: true
-    hostNetwork:
-      enabled: true
-  interval: 5m
+      - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
+    resources:
+      requests:
+        cpu: 100m
+        memory: 200Mi
