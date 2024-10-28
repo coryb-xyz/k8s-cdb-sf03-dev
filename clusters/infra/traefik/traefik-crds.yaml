@@ -1,0 +1,27 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: GitRepository
+metadata:
+  name: traefik-crds
+  namespace: flux-system
+spec:
+  interval: 30m
+  url: https://github.com/traefik/traefik-helm-chart.git
+  ref:
+    tag: v32.1.1  # Use the version that matches your Traefik version
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: traefik-crds
+  namespace: flux-system
+spec:
+  interval: 15m
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: traefik-crds
+  path: ./traefik/crds
+  healthChecks:
+    - apiVersion: apiextensions.k8s.io/v1
+      kind: CustomResourceDefinition
+      name: ingressroutes.traefik.containo.us
