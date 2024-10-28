@@ -1,25 +1,30 @@
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
 metadata:
   name: vanitydomain-ingress
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
-    kubernetes.io/ingress.class: "traefik"
-    nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
 spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`www.${base_uri}`) || Host(`${base_uri}`)
+      kind: Rule
+      services:
+        - name: vanitydomain
+          port: 80
+      middlewares:
+        - name: www-redirect
   tls:
-    - hosts:
-        - www.${base_uri}
-      secretName: vanitydomain-tls
-  ingressClassName: nginx
-  rules:
-    - host: www.${base_uri}
-      http:
-        paths:
-          - pathType: Prefix
-            path: /
-            backend:
-              service:
-                name: vanitydomain
-                port:
-                  number: 80
+    secretName: vanitydomain-tls
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: www-redirect
+spec:
+  redirectRegex:
+    regex: "^https?://${base_uri}/?(.*)"
+    replacement: "https://www.${base_uri}/${1}"
+    permanent: true
