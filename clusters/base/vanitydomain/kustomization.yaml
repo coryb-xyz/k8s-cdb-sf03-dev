@@ -4,4 +4,5 @@ resources:
   - vanitydomain-ingress.yaml
   - vanitydomain.yaml
   - namespace.yaml
+  - vanitydomain-certificate.yaml
   
