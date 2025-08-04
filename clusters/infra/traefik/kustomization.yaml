@@ -4,4 +4,4 @@ resources:
   - traefik-crds.yaml
   - traefik-helm-repository.yaml
   - traefik-helm-release.yaml
-  - traefik-gatewayclass.yaml
+  - namespace.yaml
