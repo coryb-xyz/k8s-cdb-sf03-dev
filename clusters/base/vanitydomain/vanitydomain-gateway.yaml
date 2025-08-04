@@ -8,12 +8,16 @@ metadata:
 spec:
   gatewayClassName: traefik
   listeners:
-    - name: https
+    - name: websecure  
       protocol: HTTPS
       port: 443
-      hostname: "*.${base_uri}"  # Wildcard to match both www and non-www
+      hostname: "*.${base_uri}"
       tls:
         mode: Terminate
         certificateRefs:
           - name: vanitydomain-tls
             kind: Secret
+            namespace: ${release_env}-vanitydomain
+      allowedRoutes:
+        namespaces:
+          from: Same
