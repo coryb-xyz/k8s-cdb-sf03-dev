@@ -28,9 +28,3 @@ spec:
     providers:
       kubernetesGateway:
         enabled: true
-    kubernetescrd:
-      enabled: true
-      allowEmptyServices: true
-    kubernetesingress:
-      enabled: true
-      allowEmptyServices: true
