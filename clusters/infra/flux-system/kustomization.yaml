@@ -4,5 +4,5 @@ resources:
 - gotk-components.yaml
 - gotk-sync.yaml
 - prod-env-sync.yaml
-- metrics-server.yaml\
+- metrics-server.yaml
 - prod-issuer.yaml
