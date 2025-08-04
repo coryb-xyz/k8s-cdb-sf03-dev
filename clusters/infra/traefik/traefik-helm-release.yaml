@@ -5,6 +5,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 5m
+  timeout: 10m0s
   chart:
     spec:
       chart: traefik
