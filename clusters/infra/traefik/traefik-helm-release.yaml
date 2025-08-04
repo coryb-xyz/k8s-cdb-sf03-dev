@@ -25,3 +25,12 @@ spec:
       limits:
         cpu: 100m
         memory: 100Mi
+    providers:
+      kubernetesGateway:
+        enabled: true
+    kubernetescrd:
+      enabled: true
+      allowEmptyServices: true
+    kubernetesingress:
+      enabled: true
+      allowEmptyServices: true
