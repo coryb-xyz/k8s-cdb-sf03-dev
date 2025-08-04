@@ -1,0 +1,19 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: vanitydomain-gateway
+  namespace: ${release_env}-vanitydomain
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-${release_env}"
+spec:
+  gatewayClassName: traefik
+  listeners:
+    - name: https
+      protocol: HTTPS
+      port: 443
+      hostname: "*.${base_uri}"  # Wildcard to match both www and non-www
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: vanitydomain-tls
+            kind: Secret
