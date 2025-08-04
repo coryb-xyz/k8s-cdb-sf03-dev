@@ -4,4 +4,4 @@ resources:
   - cert-manager-helm-release.yaml
   - cert-manager-helm-repository.yaml
   - cert-manager-namespace.yaml
-  - prod-issuer.yaml
+  # - prod-issuer.yaml
