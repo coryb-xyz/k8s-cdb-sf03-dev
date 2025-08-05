@@ -29,6 +29,15 @@ spec:
       websecure:
         tls:
           enabled: true
+        http:
+          redirect:
+            permanent: true
     providers:
       kubernetesGateway:
         enabled: true
+    entryPoints:
+      websecure:
+        address: ":443"
+        http:
+          tls:
+            enabled: true
