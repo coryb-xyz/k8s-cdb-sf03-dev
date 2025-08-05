@@ -33,3 +33,10 @@ spec:
         enabled: false
     gateway:
       namespacePolicy: All
+    entryPoints:
+      web:
+        address: ":80" 
+      https: 
+        address: ":443"
+        tls:
+          enabled: true
