@@ -7,27 +7,14 @@ spec:
   parentRefs:
     - name: vanitydomain-gateway
       namespace: ${release_env}-vanitydomain
+      sectionName: web
+    - name: vanitydomain-gateway
+      namespace: ${release_env}-vanitydomain
       sectionName: https
   hostnames:
     - "${base_uri}"
     - "www.${base_uri}"
   rules:
-    # Redirect non-www to www
-    - matches:
-        - headers:
-            - name: host
-              value: "${base_uri}"
-      filters:
-        - type: RequestRedirect
-          requestRedirect:
-            scheme: https
-            hostname: "www.${base_uri}"
-            statusCode: 301
-    # Route www traffic to the service
-    - matches:
-        - headers:
-            - name: host
-              value: "www.${base_uri}"
-      backendRefs:
+    - backendRefs:
         - name: vanitydomain
           port: 80

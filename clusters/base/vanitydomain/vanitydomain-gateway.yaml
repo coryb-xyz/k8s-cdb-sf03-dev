@@ -8,9 +8,16 @@ metadata:
 spec:
   gatewayClassName: traefik
   listeners:
+    - name: web
+      protocol: HTTP
+      port: 8000
+      hostname: "*.${base_uri}"
+      allowedRoutes:
+        namespaces:
+          from: Same
     - name: https  
       protocol: HTTPS
-      port: 8443  
+      port: 8443
       hostname: "*.${base_uri}"
       tls:
         mode: Terminate
