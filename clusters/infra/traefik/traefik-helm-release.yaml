@@ -33,10 +33,19 @@ spec:
         enabled: false
     gateway:
       namespacePolicy: All
+    ports:
+      web:
+        port: 80
+        expose: true
+        exposedPort: 80
+        protocol: TCP
+      websecure:  
+        port: 443
+        expose: true
+        exposedPort: 443
+        protocol: TCP
     entryPoints:
       web:
-        address: ":80" 
-      https: 
+        address: ":80"
+      websecure: 
         address: ":443"
-        tls:
-          enabled: true
