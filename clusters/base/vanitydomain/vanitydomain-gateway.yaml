@@ -8,7 +8,7 @@ metadata:
 spec:
   gatewayClassName: traefik
   listeners:
-    - name: websecure  
+    - name: https  
       protocol: HTTPS
       port: 443
       hostname: "*.${base_uri}"
