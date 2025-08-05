@@ -16,6 +16,7 @@ spec:
         namespace: flux-system
   install:
     createNamespace: true
+    crds: CreateReplace
   targetNamespace: traefik 
   values:
     resources:
@@ -28,3 +29,7 @@ spec:
     providers:
       kubernetesGateway:
         enabled: true
+      kubernetesIngress:
+        enabled: false
+    gateway:
+      namespacePolicy: All
