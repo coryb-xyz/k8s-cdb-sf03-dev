@@ -2,8 +2,8 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - vanitydomain.yaml
-  - vanitydomain-gateway.yaml
-  - vanitydomain-httproute.yaml
+  # - vanitydomain-gateway.yaml
+  # - vanitydomain-httproute.yaml
   - namespace.yaml
   - vanitydomain-certificate.yaml
   
