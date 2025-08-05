@@ -25,6 +25,10 @@ spec:
       limits:
         cpu: 100m
         memory: 100Mi
+    ports:
+      websecure:
+        tls:
+          enabled: true
     providers:
       kubernetesGateway:
         enabled: true
