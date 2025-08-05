@@ -3,7 +3,7 @@ kind: Kustomization
 resources:
   - vanitydomain.yaml
   # - vanitydomain-gateway.yaml
-  - vanitydomain-httproute.yaml
+  # - vanitydomain-httproute.yaml
   - namespace.yaml
   - vanitydomain-certificate.yaml
   
