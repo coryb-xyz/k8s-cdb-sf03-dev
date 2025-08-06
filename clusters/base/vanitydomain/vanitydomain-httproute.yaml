@@ -1,31 +1,14 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: vanitydomain-routes
-  namespace: ${release_env}-vanitydomain
+  name: test-simple
+  namespace: prod-vanitydomain
 spec:
   parentRefs:
     - name: traefik-gateway    
-      namespace: traefik       
-  hostnames:
-    - "${base_uri}"
-    - "www.${base_uri}"
+      namespace: traefik
   rules:
-    - matches:
-        - headers:
-            - name: host
-              value: "${base_uri}"
-      filters:
-        - type: RequestRedirect
-          requestRedirect:
-            scheme: https
-            hostname: "www.${base_uri}"
-            statusCode: 301
-    - matches:
-        - headers:
-            - name: host
-              value: "www.${base_uri}"
-      backendRefs:
+    - backendRefs:
         - name: vanitydomain
-          namespace: ${release_env}-vanitydomain  
           port: 80
+          
