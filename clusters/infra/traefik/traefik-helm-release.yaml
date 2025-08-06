@@ -33,16 +33,7 @@ spec:
         enabled: false
     gateway:
       enabled: true
-      namespacePolicy: All
-      listeners:
-        web:
-          port: 8000
-          protocol: HTTP
-          namespacePolicy: All
-        websecure:
-          port: 8443
-          protocol: HTTPS
-          namespacePolicy: All
+      namespacePolicy: All          
     ports:
       web:
         port: 8000
