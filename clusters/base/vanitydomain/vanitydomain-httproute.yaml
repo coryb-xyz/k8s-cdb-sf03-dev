@@ -5,13 +5,12 @@ metadata:
   namespace: ${release_env}-vanitydomain
 spec:
   parentRefs:
-    - name: traefik-gateway
-      namespace: ${release_env}-vanitydomain
+    - name: traefik-gateway    
+      namespace: traefik       
   hostnames:
     - "${base_uri}"
     - "www.${base_uri}"
   rules:
-    # Redirect non-www to www
     - matches:
         - headers:
             - name: host
@@ -22,11 +21,11 @@ spec:
             scheme: https
             hostname: "www.${base_uri}"
             statusCode: 301
-    # Route www traffic to the service
     - matches:
         - headers:
             - name: host
               value: "www.${base_uri}"
       backendRefs:
         - name: vanitydomain
+          namespace: ${release_env}-vanitydomain  
           port: 80

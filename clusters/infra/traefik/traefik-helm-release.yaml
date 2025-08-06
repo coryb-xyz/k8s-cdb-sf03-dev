@@ -32,9 +32,23 @@ spec:
       kubernetesIngress:
         enabled: false
     gateway:
+      enabled: true
       namespacePolicy: All
-    # entryPoints:
-    #   web:
-    #     address: ":80"
-    #   websecure: 
-    #     address: ":443"
+      listeners:
+        web:
+          port: 8000
+          protocol: HTTP
+          namespacePolicy: All
+        websecure:
+          port: 8443
+          protocol: HTTPS
+          namespacePolicy: All
+    ports:
+      web:
+        port: 8000
+        exposedPort: 80
+        protocol: TCP
+      websecure:
+        port: 8443
+        exposedPort: 443
+        protocol: TCP
