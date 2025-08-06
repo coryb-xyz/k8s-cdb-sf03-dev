@@ -1,14 +1,21 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: test-simple
+  name: vanitydomain-http
   namespace: prod-vanitydomain
 spec:
   parentRefs:
     - name: traefik-gateway    
       namespace: traefik
+      sectionName: web 
+  hostnames:
+    - "coryb.xyz"
+    - "www.coryb.xyz"
   rules:
-    - backendRefs:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
         - name: vanitydomain
           port: 80
-          
