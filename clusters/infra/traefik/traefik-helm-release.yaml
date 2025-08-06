@@ -32,8 +32,7 @@ spec:
       kubernetesIngress:
         enabled: false
     gateway:
-      enabled: true
-      namespacePolicy: All          
+      enabled: true   
     ports:
       web:
         port: 8000
