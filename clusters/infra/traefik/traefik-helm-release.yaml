@@ -30,8 +30,27 @@ spec:
       kubernetesGateway:
         enabled: true
       kubernetesIngress:
-        enabled: false
+        enabled: false  
+    ports:
+      web:
+        port: 8000
+        exposedPort: 80
+        protocol: TCP
+      websecure:
+        port: 8443
+        exposedPort: 443
+        protocol: TCP
     gateway:
-      enabled: true  
-      namespacePolicy: All  
-   
+      enabled: true
+      listeners:
+        web:
+          port: 8000
+          protocol: HTTP
+          namespacePolicy: All 
+        websecure:
+          port: 8443
+          protocol: HTTPS
+          namespacePolicy: All 
+          certificateRefs:
+            - name: vanitydomain-tls
+              namespace: prod-vanitydomain
