@@ -12,11 +12,41 @@ spec:
     - "coryb.xyz"
     - "www.coryb.xyz"
   rules:
+    
     - matches:
         - path:
             type: PathPrefix
             value: /
+          headers:
+            - name: "x-forwarded-proto"
+              value: "http"
+      filters:
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+            statusCode: 301
+    
+    
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      hostnames:
+        - "coryb.xyz"
+      filters:
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+            hostname: "www.coryb.xyz"
+            statusCode: 301
+    
+    
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      hostnames:
+        - "www.coryb.xyz"
       backendRefs:
         - name: vanitydomain
-          namespace: prod-vanitydomain
           port: 80
