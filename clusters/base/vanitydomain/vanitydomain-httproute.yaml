@@ -46,7 +46,7 @@ spec:
   parentRefs:
     - name: traefik
       namespace: traefik
-      sectionName: httpsecure
+      sectionName: https
   hostnames:
     - "www.${base_uri}"
   rules:
