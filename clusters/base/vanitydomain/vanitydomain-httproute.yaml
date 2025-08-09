@@ -7,7 +7,7 @@ spec:
   parentRefs:
     - name: traefik
       namespace: traefik
-      sectionName: web
+      sectionName: http
   hostnames:
     - "${base_uri}"
     - "www.${base_uri}"
@@ -27,7 +27,7 @@ spec:
   parentRefs:
     - name: traefik
       namespace: traefik
-      sectionName: websecure
+      sectionName: https
   hostnames:
     - "${base_uri}" 
   rules:
@@ -46,7 +46,7 @@ spec:
   parentRefs:
     - name: traefik
       namespace: traefik
-      sectionName: websecure
+      sectionName: httpsecure
   hostnames:
     - "www.${base_uri}"
   rules:
