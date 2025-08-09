@@ -43,6 +43,11 @@ spec:
         port: 8443
         exposedPort: 443
         protocol: TCP
+    entryPoints:
+        web:
+          address: ":80"
+        websecure:
+          address: ":443"
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
