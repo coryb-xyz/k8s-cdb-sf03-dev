@@ -32,7 +32,22 @@ spec:
       kubernetesIngress:
         enabled: false
     gateway:
-      namespacePolicy: All
+      enabled: true  
+      listeners:
+        web:
+          port: 8000
+          protocol: HTTP
+          namespacePolicy: 
+            from: All  
+        websecure:
+          port: 8443
+          protocol: HTTPS
+          namespacePolicy:
+            from: All  
+          certificateRefs:
+            - name: vanitydomain-tls
+              kind: Secret
+              namespace: prod-vanitydomain
     ports:
       web:
         port: 8000

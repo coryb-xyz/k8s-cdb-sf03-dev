@@ -5,7 +5,7 @@ metadata:
   namespace: ${release_env}-vanitydomain
 spec:
   parentRefs:
-    - name: traefik
+    - name: traefik-gateway
       namespace: traefik
       sectionName: web
   hostnames:
@@ -25,7 +25,7 @@ metadata:
   namespace: ${release_env}-vanitydomain
 spec:
   parentRefs:
-    - name: traefik
+    - name: traefik-gateway
       namespace: traefik
       sectionName: websecure
   hostnames:
@@ -44,7 +44,7 @@ metadata:
   namespace: ${release_env}-vanitydomain
 spec:
   parentRefs:
-    - name: traefik
+    - name: traefik-gateway
       namespace: traefik
       sectionName: websecure
   hostnames:
