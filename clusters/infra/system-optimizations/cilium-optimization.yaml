@@ -1,0 +1,54 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cilium-optimization
+  namespace: flux-system
+spec:
+  interval: 10m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./clusters/base/system-patches/cilium
+  prune: false  
+  targetNamespace: kube-system
+  patches:
+    - patch: |
+        apiVersion: v1
+        kind: ConfigMap
+        metadata:
+          name: cilium-config
+          namespace: kube-system
+        data:
+          preallocate-bpf-maps: "false"
+          enable-ipv6: "false"
+          enable-l7-proxy: "false"
+          enable-bandwidth-manager: "false"
+          bpf-map-dynamic-size-ratio: "0.0025"
+          bpf-policy-map-max: "8192"
+          bpf-ct-global-tcp-max: "32768"
+          bpf-ct-global-any-max: "16384"
+          monitor-aggregation: "maximum"
+      target:
+        kind: ConfigMap
+        name: cilium-config
+    - patch: |
+        apiVersion: apps/v1
+        kind: DaemonSet
+        metadata:
+          name: cilium
+          namespace: kube-system
+        spec:
+          template:
+            spec:
+              containers:
+              - name: cilium-agent
+                resources:
+                  requests:
+                    memory: "64Mi"
+                    cpu: "25m"
+                  limits:
+                    memory: "128Mi"
+                    cpu: "200m"
+      target:
+        kind: DaemonSet
+        name: cilium

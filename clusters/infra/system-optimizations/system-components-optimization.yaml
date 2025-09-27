@@ -1,0 +1,79 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: system-components-optimization
+  namespace: flux-system
+spec:
+  interval: 10m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./clusters/base/system-patches/components
+  prune: false
+  targetNamespace: kube-system
+  patches:
+
+    - patch: |
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: coredns
+          namespace: kube-system
+        spec:
+          replicas: 1
+      target:
+        kind: Deployment
+        name: coredns
+        namespace: kube-system
+    
+
+    - patch: |
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: hubble-relay
+          namespace: kube-system
+        spec:
+          replicas: 0
+      target:
+        kind: Deployment
+        name: hubble-relay
+        namespace: kube-system
+    
+
+    - patch: |
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: hubble-ui
+          namespace: kube-system
+        spec:
+          replicas: 0
+      target:
+        kind: Deployment
+        name: hubble-ui
+        namespace: kube-system
+    
+
+    - patch: |
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: metrics-server
+          namespace: kube-system
+        spec:
+          template:
+            spec:
+              containers:
+              - name: metrics-server
+                resources:
+                  requests:
+                    cpu: 10m
+                    memory: 30Mi
+                  limits:
+                    cpu: 100m
+                    memory: 60Mi
+      target:
+        kind: Deployment
+        name: metrics-server
+        namespace: kube-system

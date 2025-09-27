@@ -6,3 +6,80 @@ resources:
 - prod-env-sync.yaml
 - metrics-server.yaml
 - prod-issuer.yaml
+
+patches:
+  - target:
+      kind: Deployment
+      name: kustomize-controller
+    patch: |
+      - op: replace
+        path: /spec/template/spec/containers/0/resources
+        value:
+          requests:
+            cpu: 20m
+            memory: 40Mi
+          limits:
+            cpu: 200m
+            memory: 80Mi
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value:
+          name: GOGC
+          value: "50"
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value:
+          name: GOMEMLIMIT
+          value: "75MiB"
+  
+  - target:
+      kind: Deployment
+      name: source-controller
+    patch: |
+      - op: replace
+        path: /spec/template/spec/containers/0/resources
+        value:
+          requests:
+            cpu: 20m
+            memory: 40Mi
+          limits:
+            cpu: 200m
+            memory: 128Mi
+  
+  - target:
+      kind: Deployment
+      name: helm-controller
+    patch: |
+      - op: replace
+        path: /spec/template/spec/containers/0/resources
+        value:
+          requests:
+            cpu: 20m
+            memory: 30Mi
+          limits:
+            cpu: 200m
+            memory: 128Mi
+  
+  - target:
+      kind: Deployment
+      name: image-reflector-controller
+    patch: |
+      - op: replace
+        path: /spec/replicas
+        value: 0
+  
+  - target:
+      kind: Deployment
+      name: image-automation-controller
+    patch: |
+      - op: replace
+        path: /spec/replicas
+        value: 0
+  
+  - target:
+      kind: Deployment
+      name: notification-controller
+    patch: |
+      - op: replace
+        path: /spec/replicas
+        value: 0
