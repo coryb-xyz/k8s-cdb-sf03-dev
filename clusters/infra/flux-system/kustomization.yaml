@@ -7,88 +7,52 @@ resources:
   - prod-env-sync.yaml
   - prod-issuer.yaml
 
-patchesStrategicMerge:
-  # Kustomize controller optimization
-  - |
-    apiVersion: apps/v1
-    kind: Deployment
-    metadata:
+patches:
+  # Optimize all main controllers' resources
+  - target:
+      kind: Deployment
+      name: "(kustomize-controller|source-controller|helm-controller|notification-controller)"
+      namespace: flux-system
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/cpu
+        value: 10m
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/memory
+        value: 30Mi
+
+  # Specific higher limits for kustomize-controller
+  - target:
+      kind: Deployment
       name: kustomize-controller
       namespace: flux-system
-    spec:
-      template:
-        spec:
-          containers:
-          - name: manager
-            resources:
-              requests:
-                cpu: 10m
-                memory: 40Mi
-              limits:
-                cpu: 200m
-                memory: 100Mi
-            env:
-            - name: GOGC
-              value: "20"
-            - name: GOMEMLIMIT
-              value: "90MiB"
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits
+        value:
+          cpu: 200m
+          memory: 100Mi
 
-  # Source controller optimization
-  - |
-    apiVersion: apps/v1
-    kind: Deployment
-    metadata:
-      name: source-controller
+  # Lower limits for other controllers
+  - target:
+      kind: Deployment
+      name: "(source-controller|helm-controller)"
       namespace: flux-system
-    spec:
-      template:
-        spec:
-          containers:
-          - name: manager
-            resources:
-              requests:
-                cpu: 10m
-                memory: 30Mi
-              limits:
-                cpu: 200m
-                memory: 80Mi
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits
+        value:
+          cpu: 200m
+          memory: 80Mi
 
-  # Helm controller optimization
-  - |
-    apiVersion: apps/v1
-    kind: Deployment
-    metadata:
-      name: helm-controller
-      namespace: flux-system
-    spec:
-      template:
-        spec:
-          containers:
-          - name: manager
-            resources:
-              requests:
-                cpu: 10m
-                memory: 30Mi
-              limits:
-                cpu: 200m
-                memory: 80Mi
-
-  # Notification controller optimization
-  - |
-    apiVersion: apps/v1
-    kind: Deployment
-    metadata:
+  # Even lower for notification controller
+  - target:
+      kind: Deployment
       name: notification-controller
       namespace: flux-system
-    spec:
-      template:
-        spec:
-          containers:
-          - name: manager
-            resources:
-              requests:
-                cpu: 10m
-                memory: 20Mi
-              limits:
-                cpu: 100m
-                memory: 50Mi
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits
+        value:
+          cpu: 100m
+          memory: 50Mi
