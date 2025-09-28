@@ -1,85 +1,107 @@
+# clusters/infra/flux-system/kustomization.yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-- gotk-components.yaml
-- gotk-sync.yaml
-- prod-env-sync.yaml
-- metrics-server.yaml
-- prod-issuer.yaml
+  - gotk-components.yaml
+  - gotk-sync.yaml
+  - metrics-server.yaml
+  - prod-env-sync.yaml
+  - prod-issuer.yaml
 
-patches:
-  - target:
-      kind: Deployment
+
+patchesStrategicMerge:
+  # Kustomize controller optimization
+  - |
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
       name: kustomize-controller
-    patch: |
-      - op: replace
-        path: /spec/template/spec/containers/0/resources
-        value:
-          requests:
-            cpu: 20m
-            memory: 40Mi
-          limits:
-            cpu: 200m
-            memory: 80Mi
-      - op: add
-        path: /spec/template/spec/containers/0/env/-
-        value:
-          name: GOGC
-          value: "50"
-      - op: add
-        path: /spec/template/spec/containers/0/env/-
-        value:
-          name: GOMEMLIMIT
-          value: "75MiB"
-  
-  - target:
-      kind: Deployment
+      namespace: flux-system
+    spec:
+      template:
+        spec:
+          containers:
+          - name: manager
+            resources:
+              requests:
+                cpu: 10m
+                memory: 40Mi
+              limits:
+                cpu: 200m
+                memory: 100Mi
+            env:
+            - name: GOGC
+              value: "20"  # More aggressive GC
+            - name: GOMEMLIMIT
+              value: "90MiB"  # Override existing value
+
+  # Source controller optimization
+  - |
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
       name: source-controller
-    patch: |
-      - op: replace
-        path: /spec/template/spec/containers/0/resources
-        value:
-          requests:
-            cpu: 20m
-            memory: 40Mi
-          limits:
-            cpu: 200m
-            memory: 128Mi
-  
-  - target:
-      kind: Deployment
+      namespace: flux-system
+    spec:
+      template:
+        spec:
+          containers:
+          - name: manager
+            args:
+            - --helm-cache-max-size=5
+            - --helm-cache-ttl=10m
+            resources:
+              requests:
+                cpu: 10m
+                memory: 30Mi
+              limits:
+                cpu: 200m
+                memory: 80Mi
+
+  # Helm controller optimization
+  - |
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
       name: helm-controller
-    patch: |
-      - op: replace
-        path: /spec/template/spec/containers/0/resources
-        value:
-          requests:
-            cpu: 20m
-            memory: 30Mi
-          limits:
-            cpu: 200m
-            memory: 128Mi
-  
-  - target:
-      kind: Deployment
+      namespace: flux-system
+    spec:
+      template:
+        spec:
+          containers:
+          - name: manager
+            resources:
+              requests:
+                cpu: 10m
+                memory: 30Mi
+              limits:
+                cpu: 200m
+                memory: 80Mi
+
+  # Scale down image controllers
+  - |
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
       name: image-reflector-controller
-    patch: |
-      - op: replace
-        path: /spec/replicas
-        value: 0
-  
-  - target:
-      kind: Deployment
+      namespace: flux-system
+    spec:
+      replicas: 0
+
+  - |
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
       name: image-automation-controller
-    patch: |
-      - op: replace
-        path: /spec/replicas
-        value: 0
-  
-  - target:
-      kind: Deployment
+      namespace: flux-system
+    spec:
+      replicas: 0
+
+  - |
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
       name: notification-controller
-    patch: |
-      - op: replace
-        path: /spec/replicas
-        value: 0
+      namespace: flux-system
+    spec:
+      replicas: 0
