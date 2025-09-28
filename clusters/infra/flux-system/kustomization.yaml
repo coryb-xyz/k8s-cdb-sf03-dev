@@ -1,4 +1,3 @@
-# clusters/infra/flux-system/kustomization.yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
@@ -7,7 +6,6 @@ resources:
   - metrics-server.yaml
   - prod-env-sync.yaml
   - prod-issuer.yaml
-
 
 patchesStrategicMerge:
   # Kustomize controller optimization
@@ -31,9 +29,9 @@ patchesStrategicMerge:
                 memory: 100Mi
             env:
             - name: GOGC
-              value: "20"  # More aggressive GC
+              value: "20"
             - name: GOMEMLIMIT
-              value: "90MiB"  # Override existing value
+              value: "90MiB"
 
   # Source controller optimization
   - |
@@ -47,9 +45,6 @@ patchesStrategicMerge:
         spec:
           containers:
           - name: manager
-            args:
-            - --helm-cache-max-size=5
-            - --helm-cache-ttl=10m
             resources:
               requests:
                 cpu: 10m
@@ -78,25 +73,7 @@ patchesStrategicMerge:
                 cpu: 200m
                 memory: 80Mi
 
-  # Scale down image controllers
-  - |
-    apiVersion: apps/v1
-    kind: Deployment
-    metadata:
-      name: image-reflector-controller
-      namespace: flux-system
-    spec:
-      replicas: 0
-
-  - |
-    apiVersion: apps/v1
-    kind: Deployment
-    metadata:
-      name: image-automation-controller
-      namespace: flux-system
-    spec:
-      replicas: 0
-
+  # Notification controller optimization
   - |
     apiVersion: apps/v1
     kind: Deployment
@@ -104,4 +81,14 @@ patchesStrategicMerge:
       name: notification-controller
       namespace: flux-system
     spec:
-      replicas: 0
+      template:
+        spec:
+          containers:
+          - name: manager
+            resources:
+              requests:
+                cpu: 10m
+                memory: 20Mi
+              limits:
+                cpu: 100m
+                memory: 50Mi
