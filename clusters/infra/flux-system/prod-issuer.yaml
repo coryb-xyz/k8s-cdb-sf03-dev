@@ -12,6 +12,8 @@ spec:
     - http01:
         gatewayHTTPRoute:
           parentRefs:
-          - name: vanitydomain-gateway
-            namespace: prod-vanitydomain
+          - group: gateway.networking.k8s.io
             kind: Gateway
+            name: traefik-gateway
+            namespace: traefik
+            sectionName: web 
