@@ -7,9 +7,16 @@ spec:
   interval: 5m0s
   path: ./clusters/prod
   prune: true
+  wait: true
+  timeout: 5m
   sourceRef:
     kind: GitRepository
     name: flux-system
+  healthChecks:
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: vanitydomain
+      namespace: prod-vanitydomain
   postBuild:
     substitute:
       release_env: prod
