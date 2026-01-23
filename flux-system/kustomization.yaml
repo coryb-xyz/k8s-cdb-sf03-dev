@@ -4,8 +4,9 @@ resources:
   - gotk-components.yaml
   - gotk-sync.yaml
   - metrics-server.yaml
-  - prod-env-sync.yaml
   - prod-issuer.yaml
+  - infrastructure-sync.yaml
+  - applications-sync.yaml
 
 patches:
   # Optimize all main controllers' resources

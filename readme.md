@@ -19,17 +19,29 @@ This repository manages a production Kubernetes cluster using **GitOps principle
 
 ```
 k8s-cdb-sf03-dev/
-├── clusters/
-│   ├── base/                  # Shared base configurations
-│   │   └── vanitydomain/      # Application base manifests
-│   ├── infra/                 # Infrastructure components
+├── flux-system/               # Flux CD bootstrap & configuration
+│   ├── gotk-components.yaml   # Flux CD controllers
+│   ├── gotk-sync.yaml         # Git repository sync
+│   ├── infrastructure-sync.yaml  # Infrastructure Kustomization
+│   ├── applications-sync.yaml    # Applications Kustomization
+│   ├── metrics-server.yaml
+│   ├── prod-issuer.yaml       # ClusterIssuer for ACME
+│   └── kustomization.yaml
+├── infrastructure/            # Infrastructure components
+│   ├── base/
 │   │   ├── cert-manager/      # TLS certificate automation
 │   │   ├── traefik/           # Gateway controller
-│   │   ├── flux-system/       # Flux CD configuration
 │   │   ├── image-repos/       # Container image scanning
-│   │   └── system-optimizations/  # Resource tuning
-│   └── prod/                  # Production environment overlays
-│       └── vanitydomain/      # Production-specific configs
+│   │   ├── system-optimizations/  # Resource tuning
+│   │   └── kustomization.yaml
+│   └── overlays/
+│       └── prod/              # Production infra overrides (future)
+├── applications/              # Application workloads
+│   ├── base/
+│   │   └── vanitydomain/      # Application base manifests
+│   └── overlays/
+│       └── prod/
+│           └── vanitydomain/  # Production-specific configs
 └── readme.md
 ```
 
@@ -53,15 +65,20 @@ Deployment updated in cluster
 
 ### Sync Strategy
 
-Flux CD manages two primary Kustomizations:
+Flux CD manages three primary Kustomizations:
 
-1. **Infrastructure** (`flux-system`): Deploys core cluster services
-   - Path: `./clusters/infra`
-   - Includes: cert-manager, Traefik, metrics-server
+1. **Flux System** (`flux-system`): Bootstraps Flux CD and deploys sync configurations
+   - Path: `./flux-system`
+   - Includes: Flux controllers, GitRepository, infrastructure/app sync configs
 
-2. **Applications** (`prod-env`): Deploys workloads with environment variables
-   - Path: `./clusters/prod`
+2. **Infrastructure** (`infrastructure`): Deploys core cluster services
+   - Path: `./infrastructure/base`
+   - Includes: cert-manager, Traefik, image-repos, system optimizations
+
+3. **Applications** (`applications`): Deploys workloads with environment variables
+   - Path: `./applications/overlays/prod`
    - Variables: `release_env=prod`, `base_uri=coryb.xyz`
+   - Health checks: Monitors vanitydomain Deployment
 
 ### Certificate Management Flow
 
@@ -85,7 +102,7 @@ HTTPRoute → Backend Service
 
 Flux CD's `postBuild.substitute` mechanism enables environment-specific values:
 
-**Configuration** (in `clusters/infra/flux-system/prod-env-sync.yaml`):
+**Configuration** (in [flux-system/applications-sync.yaml](flux-system/applications-sync.yaml)):
 ```yaml
 postBuild:
   substitute:
@@ -127,7 +144,7 @@ flux bootstrap github \
   --owner=coryb-xyz \
   --repository=k8s-cdb-sf03-dev \
   --branch=main \
-  --path=./clusters/infra \
+  --path=./flux-system \
   --personal
 ```
 
@@ -159,33 +176,36 @@ kubectl describe httproute vanitydomain-https -n prod-vanitydomain
 
 ## Adding a New Application
 
-1. **Create base manifests** in `clusters/base/<app-name>/`:
+1. **Create base manifests** in `applications/base/<app-name>/`:
    - `namespace.yaml`
    - `<app-name>.yaml` (Service + Deployment)
    - `kustomization.yaml`
    - Optional: `<app-name>-certificate.yaml`, `<app-name>-httproute.yaml`
 
-2. **Create production overlay** in `clusters/prod/<app-name>/`:
-   - `kustomization.yaml` (reference base + patches)
+2. **Create production overlay** in `applications/overlays/prod/<app-name>/`:
+   - `kustomization.yaml` (reference `../../../base/<app-name>` + patches)
    - `<app-name>.yaml` (image tag patch)
 
-3. **Commit and push**:
+3. **Update overlay kustomization** in `applications/overlays/prod/kustomization.yaml`:
+   - Add `<app-name>` to resources list
+
+4. **Commit and push**:
    ```bash
-   git add clusters/base/<app-name> clusters/prod/<app-name>
+   git add applications/base/<app-name> applications/overlays/prod/<app-name>
    git commit -m "Add <app-name> application"
    git push
    ```
 
-4. **Watch Flux reconcile**:
+5. **Watch Flux reconcile**:
    ```bash
-   flux reconcile kustomization prod-env --with-source
+   flux reconcile kustomization applications --with-source
    ```
 
 ## Updating Infrastructure
 
 ### Upgrade Helm Chart Version
 
-Edit the HelmRelease in `clusters/infra/<component>/<component>-helm-release.yaml`:
+Edit the HelmRelease in `infrastructure/base/<component>/<component>-helm-release.yaml`:
 
 ```yaml
 spec:
@@ -201,7 +221,7 @@ flux reconcile helmrelease <component> -n <namespace>
 
 ### Modify System Resources
 
-Edit patches in `clusters/infra/system-optimizations/` and commit. Flux applies changes automatically.
+Edit patches in `infrastructure/base/system-optimizations/` and commit. Flux applies changes automatically.
 
 ## Troubleshooting
 
@@ -212,11 +232,11 @@ Edit patches in `clusters/infra/system-optimizations/` and commit. Flux applies 
 flux get all
 
 # Detailed errors for specific Kustomization
-flux logs --kind=Kustomization --name=prod-env
+flux logs --kind=Kustomization --name=applications
 
 # Suspend/resume reconciliation
-flux suspend kustomization prod-env
-flux resume kustomization prod-env
+flux suspend kustomization applications
+flux resume kustomization applications
 ```
 
 ### Certificate Issues

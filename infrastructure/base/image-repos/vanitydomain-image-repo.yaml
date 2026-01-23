@@ -44,5 +44,5 @@ spec:
     kind: GitRepository
     name: flux-system
   update:
-    path: ./clusters/prod/vanitydomain
+    path: ./applications/overlays/prod/vanitydomain
     strategy: Setters
