@@ -8,7 +8,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./clusters/base/system-patches/components
+  path: ./infrastructure/base/system-patches/components
   prune: false
   targetNamespace: kube-system
   patches:
