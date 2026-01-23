@@ -22,7 +22,7 @@ patches:
         path: /spec/template/spec/containers/0/resources/requests/memory
         value: 30Mi
 
-  # Specific higher limits for kustomize-controller
+  # Higher limits for kustomize-controller (needs more memory for large reconciliations)
   - target:
       kind: Deployment
       name: kustomize-controller
@@ -32,7 +32,7 @@ patches:
         path: /spec/template/spec/containers/0/resources/limits
         value:
           cpu: 200m
-          memory: 100Mi
+          memory: 256Mi
 
   # Lower limits for source-controller
   - target:
