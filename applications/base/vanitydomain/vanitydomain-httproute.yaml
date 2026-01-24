@@ -39,7 +39,7 @@ spec:
   parentRefs:
     - name: traefik-gateway
       namespace: traefik
-      sectionName: websecure
+      sectionName: websecure-vanity
   hostnames:
     - "${base_uri}" 
   rules:
@@ -58,7 +58,7 @@ spec:
   parentRefs:
     - name: traefik-gateway
       namespace: traefik
-      sectionName: websecure
+      sectionName: websecure-vanity
   hostnames:
     - "www.${base_uri}"
   rules:
