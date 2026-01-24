@@ -48,6 +48,9 @@ spec:
             - name: vanitydomain-tls
               kind: Secret
               namespace: prod-vanitydomain
+            - name: sklonger-tls
+              kind: Secret
+              namespace: prod-sklonger
     ports:
       web:
         port: 8000

@@ -1,0 +1,8 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - namespace.yaml
+  - sklonger-helmrelease.yaml
+  - sklonger-certificate.yaml
+  - sklonger-httproute.yaml
+  - secrets/ghcr-regcred.yaml

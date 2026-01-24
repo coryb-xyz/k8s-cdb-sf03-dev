@@ -7,6 +7,8 @@ resources:
   - prod-issuer.yaml
   - infrastructure-sync.yaml
   - applications-sync.yaml
+  - ghcr-coryb-charts.yaml
+  - secrets/ghcr-auth.yaml
 
 patches:
   # Optimize all main controllers' resources

@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: sklonger-tls-cert
+  namespace: ${release_env}-sklonger
+spec:
+  secretName: sklonger-tls
+  issuerRef:
+    name: letsencrypt-${release_env}
+    kind: ClusterIssuer
+  dnsNames:
+    - "${sklonger_domain}"
