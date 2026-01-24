@@ -32,22 +32,30 @@ spec:
       kubernetesIngress:
         enabled: false
     gateway:
-      enabled: true  
+      enabled: true
       listeners:
         web:
           port: 8000
           protocol: HTTP
-          namespacePolicy: 
-            from: All  
-        websecure:
+          namespacePolicy:
+            from: All
+        websecure-vanity:
           port: 8443
           protocol: HTTPS
+          hostname: "*.coryb.xyz"
           namespacePolicy:
-            from: All  
+            from: All
           certificateRefs:
             - name: vanitydomain-tls
               kind: Secret
               namespace: prod-vanitydomain
+        websecure-sklonger:
+          port: 8443
+          protocol: HTTPS
+          hostname: "sklonger.app"
+          namespacePolicy:
+            from: All
+          certificateRefs:
             - name: sklonger-tls
               kind: Secret
               namespace: prod-sklonger
