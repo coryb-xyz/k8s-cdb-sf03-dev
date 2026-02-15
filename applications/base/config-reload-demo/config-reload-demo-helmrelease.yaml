@@ -20,7 +20,7 @@ spec:
       appName: "config-reload-demo"
       environment: "${release_env}"
       logLevel: info
-      featureFlags: "dark-mode,turbo-mode,auto-reload"
+      featureFlags: "dark-mode,turbo-mode,auto-reload,toast"
     secrets:
       create: true
   valuesFrom:
