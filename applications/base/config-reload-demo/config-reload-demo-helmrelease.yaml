@@ -14,8 +14,7 @@ spec:
         name: ghcr-coryb-charts
         namespace: flux-system
   values:
-    image:
-      tag: "0.2.0-2"
+    fullnameOverride: config-reload-demo
     replicaCount: 1
     config:
       appName: "config-reload-demo"
