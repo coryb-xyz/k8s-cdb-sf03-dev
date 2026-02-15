@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: config-reload-demo-tls-cert
+  namespace: ${release_env}-config-reload-demo
+spec:
+  secretName: config-reload-demo-tls
+  issuerRef:
+    name: letsencrypt-${release_env}
+    kind: ClusterIssuer
+  dnsNames:
+    - "${demo_domain}"

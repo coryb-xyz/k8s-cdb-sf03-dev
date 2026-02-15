@@ -59,6 +59,16 @@ spec:
             - name: sklonger-tls
               kind: Secret
               namespace: prod-sklonger
+        websecure-demo:
+          port: 8443
+          protocol: HTTPS
+          hostname: "demo.coryb.xyz"
+          namespacePolicy:
+            from: All
+          certificateRefs:
+            - name: config-reload-demo-tls
+              kind: Secret
+              namespace: prod-config-reload-demo
     ports:
       web:
         port: 8000

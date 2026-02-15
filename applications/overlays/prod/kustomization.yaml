@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - vanitydomain
   - sklonger
+  - config-reload-demo
