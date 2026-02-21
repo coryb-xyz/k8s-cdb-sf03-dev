@@ -55,7 +55,8 @@ spec:
               value: warn
           volumeMounts:
             - name: files
-              mountPath: /public
+              mountPath: /public/client-metadata.json
+              subPath: client-metadata.json
           resources:
             requests:
               cpu: 5m
