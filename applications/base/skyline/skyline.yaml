@@ -7,7 +7,7 @@ data:
     {
       "client_id": "https://stup.me/client-metadata.json",
       "client_name": "SkyLine",
-      "redirect_uris": ["skyline://oauth/callback"],
+      "redirect_uris": ["app.skyline://oauth/callback"],
       "grant_types": ["authorization_code", "refresh_token"],
       "response_types": ["code"],
       "token_endpoint_auth_method": "none",
