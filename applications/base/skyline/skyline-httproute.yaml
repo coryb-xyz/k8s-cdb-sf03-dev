@@ -1,0 +1,46 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: skyline-http-redirect
+  namespace: prod-skyline
+spec:
+  hostnames:
+    - "stup.me"
+  parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: traefik-gateway
+      namespace: traefik
+      sectionName: web
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /.well-known/acme-challenge/
+      backendRefs: []
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      filters:
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+            statusCode: 301
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: skyline-https
+  namespace: prod-skyline
+spec:
+  hostnames:
+    - "stup.me"
+  parentRefs:
+    - name: traefik-gateway
+      namespace: traefik
+      sectionName: websecure-skyline
+  rules:
+    - backendRefs:
+        - name: skyline
+          port: 80

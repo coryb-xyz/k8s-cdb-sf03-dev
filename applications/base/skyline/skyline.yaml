@@ -1,0 +1,69 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: skyline-files
+data:
+  client-metadata.json: |
+    {
+      "client_id": "https://stup.me/client-metadata.json",
+      "client_name": "SkyLine",
+      "redirect_uris": ["skyline://oauth/callback"],
+      "grant_types": ["authorization_code", "refresh_token"],
+      "response_types": ["code"],
+      "token_endpoint_auth_method": "none",
+      "application_type": "native",
+      "dpop_bound_access_tokens": true,
+      "scope": "atproto transition:generic"
+    }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: skyline
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    app: skyline
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skyline
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: skyline
+  template:
+    metadata:
+      labels:
+        app: skyline
+    spec:
+      containers:
+        - name: skyline
+          image: ghcr.io/static-web-server/static-web-server:2
+          ports:
+            - containerPort: 80
+          env:
+            - name: SERVER_PORT
+              value: "80"
+            - name: SERVER_ROOT
+              value: /public
+            - name: SERVER_LOG_LEVEL
+              value: warn
+          volumeMounts:
+            - name: files
+              mountPath: /public
+          resources:
+            requests:
+              cpu: 5m
+              memory: 4Mi
+            limits:
+              cpu: 50m
+              memory: 8Mi
+      volumes:
+        - name: files
+          configMap:
+            name: skyline-files
