@@ -69,6 +69,16 @@ spec:
             - name: config-reload-demo-tls
               kind: Secret
               namespace: prod-config-reload-demo
+        websecure-skyline:
+          port: 8443
+          protocol: HTTPS
+          hostname: "stup.me"
+          namespacePolicy:
+            from: All
+          certificateRefs:
+            - name: skyline-tls
+              kind: Secret
+              namespace: prod-skyline
     ports:
       web:
         port: 8000
