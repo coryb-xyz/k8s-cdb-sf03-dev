@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: giftfeed-tls-cert
+  namespace: ${release_env}-giftfeed
+spec:
+  secretName: giftfeed-tls
+  issuerRef:
+    name: letsencrypt-${release_env}
+    kind: ClusterIssuer
+  dnsNames:
+    - "${giftfeed_domain}"
