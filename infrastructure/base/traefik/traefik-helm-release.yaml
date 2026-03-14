@@ -79,6 +79,16 @@ spec:
             - name: skyline-tls
               kind: Secret
               namespace: prod-skyline
+        websecure-giftfeed:
+          port: 8443
+          protocol: HTTPS
+          hostname: "giftfeed.fyi"
+          namespacePolicy:
+            from: All
+          certificateRefs:
+            - name: giftfeed-tls
+              kind: Secret
+              namespace: prod-giftfeed
     ports:
       web:
         port: 8000
