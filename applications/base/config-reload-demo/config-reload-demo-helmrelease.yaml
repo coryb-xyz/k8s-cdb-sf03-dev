@@ -23,6 +23,9 @@ spec:
       featureFlags: "dark-mode,turbo-mode,auto-reload"
     secrets:
       create: true
+    resources:
+      limits:
+        memory: "128Mi"
   valuesFrom:
     - kind: Secret
       name: config-reload-demo-secrets
