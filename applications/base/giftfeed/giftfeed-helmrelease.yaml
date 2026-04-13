@@ -17,6 +17,8 @@ spec:
     replicaCount: 1
     imagePullSecrets:
       - name: ghcr-regcred
+    app:
+      jetstreamUrl: "wss://jetstream2.us-west.bsky.network/subscribe"
     
   valuesFrom:
     - kind: Secret
