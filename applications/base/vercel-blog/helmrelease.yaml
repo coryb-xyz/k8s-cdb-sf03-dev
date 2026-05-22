@@ -16,6 +16,10 @@ spec:
   values:
     fullnameOverride: vercel-blog
     replicaCount: 1
+    resources:
+      limits:
+        memory: 96Mi
+
     httpRoute:
       enabled: true
       parentRefs: 
