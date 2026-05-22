@@ -31,6 +31,10 @@ spec:
       namespace: prod-config-reload-demo
     - apiVersion: helm.toolkit.fluxcd.io/v2beta1
       kind: HelmRelease
+      name: vercel-blog
+      namespace: prod-vercel-blog
+    - apiVersion: helm.toolkit.fluxcd.io/v2beta1
+      kind: HelmRelease
       name: giftfeed
       namespace: prod-giftfeed
   postBuild:
@@ -39,4 +43,5 @@ spec:
       base_uri: coryb.xyz
       sklonger_domain: sklonger.app
       demo_domain: demo.coryb.xyz
+      vercel_blog_domain: vercel-demo.coryb.xyz
       giftfeed_domain: giftfeed.fyi

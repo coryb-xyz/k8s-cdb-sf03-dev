@@ -69,6 +69,16 @@ spec:
             - name: config-reload-demo-tls
               kind: Secret
               namespace: prod-config-reload-demo
+        websecure-vercel-blog:
+          port: 8443
+          protocol: HTTPS
+          hostname: "vercel-demo.coryb.xyz"
+          namespacePolicy:
+            from: All
+          certificateRefs:
+            - name: vercel-blog-tls
+              kind: Secret
+              namespace: prod-vercel-blog
         websecure-skyline:
           port: 8443
           protocol: HTTPS

@@ -1,0 +1,33 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: vercel-blog
+  namespace: ${release_env}-vercel-blog
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: vercel-blog
+      version: ">=0.1.0-0"
+      sourceRef:
+        kind: HelmRepository
+        name: ghcr-coryb-charts
+        namespace: flux-system
+  values:
+    fullnameOverride: vercel-blog
+    replicaCount: 1
+    httpRoute:
+      enabled: true
+      parentRefs: 
+        - group: gateway.networking.k8s.io
+          kind: Gateway
+          name: traefik-gateway
+          namespace: traefik
+          sectionName: websecure-vercel-blog
+      hostnames: ["${vercel_blog_domain}"]
+      rules: 
+         - backendRefs:
+            - name: vercel-blog
+              port: 80
+
+
