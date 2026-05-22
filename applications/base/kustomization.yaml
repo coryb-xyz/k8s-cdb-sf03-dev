@@ -4,5 +4,5 @@ resources:
   - vanitydomain
   - sklonger
   - config-reload-demo
-  - vercel-blog-demo
+  - vercel-blog
   - skyline
