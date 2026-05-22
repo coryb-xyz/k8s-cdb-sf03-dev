@@ -29,5 +29,11 @@ spec:
          - backendRefs:
             - name: vercel-blog
               port: 80
+      livenessProbe:
+        httpGet:
+          port: 3000
+      readinessProbe:
+        httpGet:
+          port: 3000
 
 
