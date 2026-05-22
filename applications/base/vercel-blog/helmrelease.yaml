@@ -26,7 +26,11 @@ spec:
           sectionName: websecure-vercel-blog
       hostnames: ["${vercel_blog_domain}"]
       rules: 
-         - backendRefs:
+        - matches:
+          - path:
+              type: PathPrefix
+              value: /
+          backendRefs:
             - name: vercel-blog
               port: 80
     livenessProbe:
